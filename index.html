@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DocuMentor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome to DocuMentor</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="documents" multiple required>
+        <button type="submit">Start New Chat</button>
+    </form>
+
+    <h2>Previous Sessions</h2>
+    <ul>
+        {% for session in sessions %}
+            <li><a href="{{ url_for('chat', session_id=session) }}">Session {{ session }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

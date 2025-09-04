@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DocuMentor Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Chat Session: {{ session_id }}</h1>
+    <a href="{{ url_for('index') }}">Go Back to Home</a>
+
+    <div id="chat-box">
+        {% for sender, message in chat_history %}
+            <p><strong>{{ sender }}:</strong> {{ message }}</p>
+        {% endfor %}
+    </div>
+
+    <form id="chat-form">
+        <input type="text" id="question" name="question" placeholder="Ask a question..." required>
+        <button type="submit">Send</button>
+    </form>
+
+<script>
+    document.getElementById('chat-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const question = document.getElementById('question').value;
+        const response = await fetch(`/ask/{{ session_id }}`, {
+            method: 'POST',
+            body: new URLSearchParams({ question }),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+        const data = await response.json();
+        location.reload();
+    });
+</script>
+</body>
+</html>
